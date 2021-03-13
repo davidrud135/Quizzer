@@ -14,6 +14,7 @@ public class Main extends Application {
         primaryStage.setTitle("Quizzer");
         primaryStage.setScene(new Scene(root, 1920, 1080));
         primaryStage.setMaximized(true);
+        primaryStage.setResizable(false);
         primaryStage.show();
     }
 
