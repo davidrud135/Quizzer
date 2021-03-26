@@ -1,0 +1,12 @@
+.text-field.has-error {
+    -fx-border-color: red;
+    -fx-focus-color: transparent;
+    -fx-faint-focus-color: transparent;
+}
+.hyperlink {
+    -fx-border-color: transparent;
+}
+.error-label {
+    -fx-text-fill: red;
+    -fx-font-size: 12px;
+}
