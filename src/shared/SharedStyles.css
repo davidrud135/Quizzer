@@ -1,0 +1,12 @@
+* {
+    -primary-color: #6200ee;
+}
+
+.primary-btn {
+    -fx-background-color: -primary-color;
+    -fx-text-fill: azure;
+}
+
+.hyperlink {
+    -fx-border-color: transparent;
+}
