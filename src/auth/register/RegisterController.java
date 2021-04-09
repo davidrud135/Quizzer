@@ -1,58 +1,59 @@
 package auth.register;
 
 import auth.AuthService;
+import com.jfoenix.controls.JFXPasswordField;
+import com.jfoenix.controls.JFXTextField;
+import com.jfoenix.validation.RegexValidator;
+import com.jfoenix.validation.RequiredFieldValidator;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
+import models.ApiErrorResponse;
+import models.ApiResponseStatusCodes;
 import models.CreateUser;
+import shared.AppWindowsPaths;
 import utils.AuthUtils;
 import utils.GeneralUtils;
+import utils.GsonWrapper;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.http.HttpResponse;
 
 public class RegisterController {
+    private final String INITIAL_REGISTER_BTN_TEXT = "Sign Up";
     private final int MIN_PASSWORD_LENGTH = 6;
 
     @FXML
     private VBox registerFormBox;
 
     @FXML
-    private VBox loadingBox;
+    private JFXTextField fullNameField;
 
     @FXML
-    private TextField fullNameField;
+    private JFXTextField emailField;
 
     @FXML
-    private Label fullNameErrorLabel;
-
-    @FXML
-    private TextField emailField;
-
-    @FXML
-    private Label emailErrorLabel;
-
-    @FXML
-    private PasswordField passwordField;
-
-    @FXML
-    private Label passwordErrorLabel;
+    private JFXPasswordField passwordField;
 
     @FXML
     private Button registerBtn;
 
     @FXML
     void initialize() {
-        registerFormBox.managedProperty().bind(registerFormBox.visibleProperty());
-        loadingBox.managedProperty().bind(loadingBox.visibleProperty());
-        fullNameErrorLabel.managedProperty().bind(fullNameErrorLabel.visibleProperty());
-        emailErrorLabel.managedProperty().bind(emailErrorLabel.visibleProperty());
-        passwordErrorLabel.managedProperty().bind(passwordErrorLabel.visibleProperty());
+        registerBtn.setText(INITIAL_REGISTER_BTN_TEXT);
+        var requiredFieldValidator = new RequiredFieldValidator();
+        requiredFieldValidator.setMessage("This field is required.");
+        var emailFieldValidator = new RegexValidator();
+        emailFieldValidator.setRegexPattern("^[\\w!#$%&'*+/=?`{|}~^-]+(?:\\.[\\w!#$%&'*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$");
+        emailFieldValidator.setMessage("Email is not valid.");
+        var passwordFieldValidator = new RegexValidator();
+        passwordFieldValidator.setRegexPattern("^.{" + MIN_PASSWORD_LENGTH + ",}$");
+        passwordFieldValidator.setMessage("Password length should be at least " + MIN_PASSWORD_LENGTH + " chars.");
+        fullNameField.getValidators().add(requiredFieldValidator);
+        emailField.getValidators().add(emailFieldValidator);
+        passwordField.getValidators().add(passwordFieldValidator);
     }
 
     @FXML
@@ -60,67 +61,55 @@ public class RegisterController {
         String userFullName = fullNameField.getText().trim();
         String userEmail = emailField.getText().trim();
         String userPass = passwordField.getText().trim();
-        boolean canRegister = validateRegisterForm(userFullName, userEmail, userPass);
+        boolean canRegister = validateRegisterForm();
         if (!canRegister) {
             return;
         }
+        setLoadingState(true);
         var newUser = new CreateUser(userFullName, userEmail, userPass);
-        AuthUtils.setLoadingFormState(true, registerFormBox, loadingBox);
         AuthService
                 .register(newUser)
-                .thenAcceptAsync(resp -> handleRegisterResponse(resp));
+                .thenAcceptAsync(this::handleRegisterResponse);
     }
 
     @FXML
     void openLoginWindow() throws IOException {
-        GeneralUtils.openWindow("/auth/login/LoginDoc.fxml", registerBtn.getScene().getWindow());
+        GeneralUtils.openWindow(AppWindowsPaths.LOGIN_WINDOW, registerBtn.getScene().getWindow());
     }
 
-    boolean validateRegisterForm(String userFullName, String userEmail, String userPass) {
-        boolean isValidFullName = !userFullName.isEmpty();
-        boolean isValidEmail = AuthUtils.isEmailValid(userEmail);
-        boolean isValidPassword = isPasswordValid(userPass);
-        AuthUtils.markFormGroupValidity(
-                isValidFullName,
-                "Full Name is required.",
-                fullNameField,
-                fullNameErrorLabel
-        );
-        AuthUtils.markFormGroupValidity(
-                isValidEmail,
-                "Email is not valid.",
-                emailField,
-                emailErrorLabel
-        );
-        AuthUtils.markFormGroupValidity(
-                isValidPassword,
-                "Password must contain at least 6 chars.",
-                passwordField,
-                passwordErrorLabel
-        );
+    boolean validateRegisterForm() {
+        boolean isValidFullName = fullNameField.validate();
+        boolean isValidEmail = emailField.validate();
+        boolean isValidPassword = passwordField.validate();
+
         return isValidFullName && isValidEmail && isValidPassword;
     }
 
     void handleRegisterResponse(HttpResponse<String> resp) {
         Platform.runLater(() -> {
-            AuthUtils.setLoadingFormState(false, registerFormBox, loadingBox);
+            setLoadingState(false);
             var currWindow = registerBtn.getScene().getWindow();
             try {
-                switch (resp.statusCode()) {
-                    case 200:
-                        AuthUtils.openAuthModal("You have successfully registered.\n Now please login", currWindow);
-                        GeneralUtils.openWindow("/auth/login/LoginDoc.fxml", currWindow);
-                        break;
-                    default:
-                        AuthUtils.openAuthModal("An error occurred.", currWindow);
+                if (resp.statusCode() == ApiResponseStatusCodes.REGISTER_SUCCESSFUL) {
+                    AuthUtils.openAuthModal("You have successfully registered.\n Now please login", currWindow);
+                    GeneralUtils.openWindow(AppWindowsPaths.LOGIN_WINDOW, currWindow);
+                    return;
                 }
+                var errResp = GsonWrapper.getInstance().fromJson(resp.body(), ApiErrorResponse.class);
+                AuthUtils.openAuthModal(errResp.getMessage(), currWindow);
             } catch (IOException e) {
                 e.printStackTrace();
             }
         });
     }
 
-    boolean isPasswordValid(String password) {
-        return password.length() >= MIN_PASSWORD_LENGTH;
+    void setLoadingState(boolean isLoading) {
+        if (isLoading) {
+            registerFormBox.setDisable(true);
+            registerBtn.setText("Signing you up..");
+            return;
+        }
+        registerFormBox.setDisable(false);
+        registerBtn.setText(INITIAL_REGISTER_BTN_TEXT);
     }
 }

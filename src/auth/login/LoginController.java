@@ -1,100 +1,96 @@
 package auth.login;
 
 import auth.AuthService;
+import com.jfoenix.controls.JFXPasswordField;
+import com.jfoenix.controls.JFXTextField;
+import com.jfoenix.validation.RequiredFieldValidator;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
+import models.ApiErrorResponse;
+import models.ApiResponseStatusCodes;
+import shared.AppWindowsPaths;
 import utils.AuthUtils;
 import utils.GeneralUtils;
+import utils.GsonWrapper;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.http.HttpResponse;
 
 public class LoginController {
-
+    private final String INITIAL_LOGIN_BTN_TEXT = "Sign In";
     @FXML
     private VBox loginFormBox;
 
     @FXML
-    private VBox loadingBox;
+    private JFXTextField emailField;
 
     @FXML
-    private TextField emailField;
-
-    @FXML
-    private Label emailErrorLabel;
-
-    @FXML
-    private PasswordField passwordField;
-
-    @FXML
-    private Label passwordErrorLabel;
+    private JFXPasswordField passwordField;
 
     @FXML
     private Button loginBtn;
 
     @FXML
     void initialize() {
-        loginFormBox.managedProperty().bind(loginFormBox.visibleProperty());
-        loadingBox.managedProperty().bind(loadingBox.visibleProperty());
-        emailErrorLabel.managedProperty().bind(emailErrorLabel.visibleProperty());
-        passwordErrorLabel.managedProperty().bind(passwordErrorLabel.visibleProperty());
+        loginBtn.setText(INITIAL_LOGIN_BTN_TEXT);
+        var requiredFieldValidator = new RequiredFieldValidator("This field is required.");
+        emailField.getValidators().add(requiredFieldValidator);
+        passwordField.getValidators().add(requiredFieldValidator);
     }
 
     @FXML
     void loginUser() throws URISyntaxException {
         String userEmail = emailField.getText().trim();
         String userPass = passwordField.getText().trim();
-        boolean canLogin = validateLoginForm(userEmail, userPass);
+        boolean canLogin = validateLoginForm();
         if (!canLogin) {
             return;
         }
-        AuthUtils.setLoadingFormState(true, loginFormBox, loadingBox);
+        setLoadingState(true);
         AuthService
                 .login(userEmail, userPass)
-                .thenAcceptAsync(resp -> handleLoginResponse(resp));
+                .thenAcceptAsync(this::handleLoginResponse);
     }
 
     @FXML
     void openRegisterWindow() throws IOException {
-        GeneralUtils.openWindow("/auth/register/RegisterDoc.fxml", loginBtn.getScene().getWindow());
+        GeneralUtils.openWindow(AppWindowsPaths.REGISTER_WINDOW, loginBtn.getScene().getWindow());
     }
 
-    boolean validateLoginForm(String userEmail, String userPassword) {
-        boolean isValidEmail = !userEmail.isEmpty();
-        boolean isValidPassword = !userPassword.isEmpty();
-        AuthUtils.markFormGroupValidity(
-                isValidEmail,
-                "Email is required.",
-                emailField,
-                emailErrorLabel
-        );
-        AuthUtils.markFormGroupValidity(
-                isValidPassword,
-                "Password is required.",
-                passwordField,
-                passwordErrorLabel
-        );
+    boolean validateLoginForm() {
+        boolean isValidEmail = emailField.validate();
+        boolean isValidPassword = passwordField.validate();
+
         return isValidEmail && isValidPassword;
     }
 
     void handleLoginResponse(HttpResponse<String> resp) {
         Platform.runLater(() -> {
-            AuthUtils.setLoadingFormState(false, loginFormBox, loadingBox);
+            setLoadingState(false);
             var currWindow = loginBtn.getScene().getWindow();
             try {
-                switch (resp.statusCode()) {
-                    case 200:
-                        GeneralUtils.openWindow("/app/AppDoc.fxml", currWindow);
-                        break;
-                    default:
-                        AuthUtils.openAuthModal(String.valueOf(resp.statusCode()), currWindow);
+                if (resp.statusCode() == ApiResponseStatusCodes.LOGIN_SUCCESSFUL) {
+                    GeneralUtils.openWindow(AppWindowsPaths.MAIN_WINDOW, currWindow);
+                    return;
                 }
+                var errResp = GsonWrapper.getInstance().fromJson(resp.body(), ApiErrorResponse.class);
+                AuthUtils.openAuthModal(errResp.getMessage(), currWindow);
             } catch (IOException e) {
                 e.printStackTrace();
             }
         });
+    }
+
+    void setLoadingState(boolean isLoading) {
+        if (isLoading) {
+            loginBtn.setText("Signing you in..");
+            loginFormBox.setDisable(true);
+            return;
+        }
+        loginFormBox.setDisable(false);
+        loginBtn.setText(INITIAL_LOGIN_BTN_TEXT);
     }
 }

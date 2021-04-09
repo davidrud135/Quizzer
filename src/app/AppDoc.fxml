@@ -92,11 +92,11 @@
                               <Font size="14.0" />
                            </font>
                         </Label>
-                        <MenuButton mnemonicParsing="false" styleClass="user-menu-btn" text="David RJ">
+                        <MenuButton fx:id="userMenuBtn" mnemonicParsing="false" styleClass="user-menu-btn">
                           <items>
                             <MenuItem mnemonicParsing="false" text="Profile" />
                               <SeparatorMenuItem mnemonicParsing="false" />
-                            <MenuItem mnemonicParsing="false" text="Sign Out" />
+                            <MenuItem mnemonicParsing="false" onAction="#onSignOut" text="Sign Out" />
                           </items>
                            <cursor>
                               <Cursor fx:constant="HAND" />

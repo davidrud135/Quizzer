@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Button?>
+<?import com.jfoenix.controls.JFXButton?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
@@ -19,11 +19,11 @@
       </HBox>
       <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
          <children>
-            <Button fx:id="dismissBtn" mnemonicParsing="false" text="OK">
+            <JFXButton fx:id="dismissBtn" focusTraversable="false" style="-fx-border-color: black; -fx-border-radius: 5px;" text="OK" textAlignment="CENTER">
                <font>
                   <Font size="18.0" />
                </font>
-            </Button>
+            </JFXButton>
          </children>
       </HBox>
    </children>

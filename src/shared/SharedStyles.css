@@ -1,10 +1,16 @@
 * {
     -primary-color: #6200ee;
+    -danger-color: #CC0000;
 }
 
+.primary-btn, .danger-btn {
+    -fx-text-fill: azure;
+}
 .primary-btn {
     -fx-background-color: -primary-color;
-    -fx-text-fill: azure;
+}
+.danger-btn {
+    -fx-background-color: -danger-color;
 }
 
 .hyperlink {
