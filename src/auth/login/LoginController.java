@@ -10,7 +10,7 @@ import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 import models.ApiErrorResponse;
 import models.ApiResponseStatusCodes;
-import shared.AppWindowsPaths;
+import shared.AppDocumentsPaths;
 import utils.AuthUtils;
 import utils.GeneralUtils;
 import utils.GsonWrapper;
@@ -57,7 +57,7 @@ public class LoginController {
 
     @FXML
     void openRegisterWindow() throws IOException {
-        GeneralUtils.openWindow(AppWindowsPaths.REGISTER_WINDOW, loginBtn.getScene().getWindow());
+        GeneralUtils.openWindow(AppDocumentsPaths.REGISTER, loginBtn.getScene().getWindow());
     }
 
     boolean validateLoginForm() {
@@ -73,7 +73,7 @@ public class LoginController {
             var currWindow = loginBtn.getScene().getWindow();
             try {
                 if (resp.statusCode() == ApiResponseStatusCodes.LOGIN_SUCCESSFUL) {
-                    GeneralUtils.openWindow(AppWindowsPaths.MAIN_WINDOW, currWindow);
+                    GeneralUtils.openWindow(AppDocumentsPaths.MAIN, currWindow);
                     return;
                 }
                 var errResp = GsonWrapper.getInstance().fromJson(resp.body(), ApiErrorResponse.class);

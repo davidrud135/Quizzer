@@ -2,7 +2,7 @@ package app;
 
 import javafx.application.Application;
 import javafx.stage.Stage;
-import shared.AppWindowsPaths;
+import shared.AppDocumentsPaths;
 import utils.GeneralUtils;
 
 import java.io.IOException;
@@ -11,7 +11,7 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws IOException {
-        GeneralUtils.openWindow(AppWindowsPaths.LOGIN_WINDOW, null);
+        GeneralUtils.openWindow(AppDocumentsPaths.LOGIN, null);
     }
 
     public static void main(String[] args) {

@@ -4,7 +4,7 @@ import auth.AuthService;
 import javafx.fxml.FXML;
 import javafx.scene.control.MenuButton;
 import models.User;
-import shared.AppWindowsPaths;
+import shared.AppDocumentsPaths;
 import utils.GeneralUtils;
 
 import java.io.IOException;
@@ -24,7 +24,7 @@ public class AppController {
     @FXML
     void onSignOut() throws IOException {
         AuthService.signOut();
-        GeneralUtils.openWindow(AppWindowsPaths.LOGIN_WINDOW, userMenuBtn.getScene().getWindow());
+        GeneralUtils.openWindow(AppDocumentsPaths.LOGIN, userMenuBtn.getScene().getWindow());
     }
 
 }
