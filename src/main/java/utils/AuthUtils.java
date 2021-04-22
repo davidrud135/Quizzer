@@ -1,6 +1,6 @@
 package utils;
 
-import auth.modal.AuthModalWindowController;
+import auth.AuthModalWindowController;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;

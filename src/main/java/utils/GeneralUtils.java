@@ -9,9 +9,14 @@ import javafx.stage.Window;
 
 import java.awt.*;
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 public class GeneralUtils {
     public static void openWindow(String docPath, Window prevWindow) throws IOException {
+        Path currentRelativePath = Paths.get("");
+        String s = currentRelativePath.toAbsolutePath().toString();
+        System.out.println("Current relative path is: " + s);
         Parent root = FXMLLoader.load(GeneralUtils.class.getResource(docPath));
         Stage stage = new Stage();
         stage.setTitle("Quizzer");

@@ -1,6 +1,5 @@
-package auth.register;
+package auth;
 
-import auth.AuthService;
 import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
 import com.jfoenix.validation.RegexValidator;

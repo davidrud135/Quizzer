@@ -150,7 +150,7 @@
          </children></AnchorPane>
   </children>
    <stylesheets>
-      <URL value="@AppStyles.css" />
-      <URL value="@../shared/SharedStyles.css" />
+      <URL value="@styles/AppStyles.css" />
+      <URL value="@styles/SharedStyles.css" />
    </stylesheets>
 </VBox>

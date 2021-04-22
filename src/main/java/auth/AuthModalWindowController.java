@@ -1,4 +1,4 @@
-package auth.modal;
+package auth;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
