@@ -1,12 +1,11 @@
 package auth;
 
-import com.jfoenix.controls.JFXPasswordField;
-import com.jfoenix.controls.JFXTextField;
-import com.jfoenix.validation.RegexValidator;
-import com.jfoenix.validation.RequiredFieldValidator;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import models.ApiErrorResponse;
 import models.ApiResponseStatusCodes;
@@ -23,18 +22,28 @@ import java.net.http.HttpResponse;
 public class RegisterController {
     private final String INITIAL_REGISTER_BTN_TEXT = "Sign Up";
     private final int MIN_PASSWORD_LENGTH = 6;
+    private final String EMAIL_REGEX = "^[\\w!#$%&'*+/=?`{|}~^-]+(?:\\.[\\w!#$%&'*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$";
 
     @FXML
     private VBox registerFormBox;
 
     @FXML
-    private JFXTextField fullNameField;
+    private TextField fullNameField;
 
     @FXML
-    private JFXTextField emailField;
+    private Label fullNameErrorLabel;
 
     @FXML
-    private JFXPasswordField passwordField;
+    private TextField emailField;
+
+    @FXML
+    private Label emailErrorLabel;
+
+    @FXML
+    private PasswordField passwordField;
+
+    @FXML
+    private Label passwordErrorLabel;
 
     @FXML
     private Button registerBtn;
@@ -42,17 +51,9 @@ public class RegisterController {
     @FXML
     void initialize() {
         registerBtn.setText(INITIAL_REGISTER_BTN_TEXT);
-        var requiredFieldValidator = new RequiredFieldValidator();
-        requiredFieldValidator.setMessage("This field is required.");
-        var emailFieldValidator = new RegexValidator();
-        emailFieldValidator.setRegexPattern("^[\\w!#$%&'*+/=?`{|}~^-]+(?:\\.[\\w!#$%&'*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$");
-        emailFieldValidator.setMessage("Email is not valid.");
-        var passwordFieldValidator = new RegexValidator();
-        passwordFieldValidator.setRegexPattern("^.{" + MIN_PASSWORD_LENGTH + ",}$");
-        passwordFieldValidator.setMessage("Password length should be at least " + MIN_PASSWORD_LENGTH + " chars.");
-        fullNameField.getValidators().add(requiredFieldValidator);
-        emailField.getValidators().add(emailFieldValidator);
-        passwordField.getValidators().add(passwordFieldValidator);
+        fullNameErrorLabel.managedProperty().bind(fullNameErrorLabel.visibleProperty());
+        emailErrorLabel.managedProperty().bind(emailErrorLabel.visibleProperty());
+        passwordErrorLabel.managedProperty().bind(passwordErrorLabel.visibleProperty());
     }
 
     @FXML
@@ -60,7 +61,7 @@ public class RegisterController {
         String userFullName = fullNameField.getText().trim();
         String userEmail = emailField.getText().trim();
         String userPass = passwordField.getText().trim();
-        boolean canRegister = validateRegisterForm();
+        boolean canRegister = validateRegisterForm(userFullName, userEmail, userPass);
         if (!canRegister) {
             return;
         }
@@ -76,12 +77,31 @@ public class RegisterController {
         GeneralUtils.openWindow(AppDocumentsPaths.LOGIN, registerBtn.getScene().getWindow());
     }
 
-    boolean validateRegisterForm() {
-        boolean isValidFullName = fullNameField.validate();
-        boolean isValidEmail = emailField.validate();
-        boolean isValidPassword = passwordField.validate();
+    boolean validateRegisterForm(String fullName, String email, String password) {
+        boolean isFullNameValid = !fullName.isEmpty();
+        boolean isEmailValid = email.matches(EMAIL_REGEX);
+        boolean isPasswordValid = password.length() >= MIN_PASSWORD_LENGTH;
 
-        return isValidFullName && isValidEmail && isValidPassword;
+        AuthUtils.setFormGroupValidity(
+                isFullNameValid,
+                "This field is required.",
+                fullNameField,
+                fullNameErrorLabel
+        );
+        AuthUtils.setFormGroupValidity(
+                isEmailValid,
+                "Email is not valid.",
+                emailField,
+                emailErrorLabel
+        );
+        AuthUtils.setFormGroupValidity(
+                isPasswordValid,
+                "Password length should be at least " + MIN_PASSWORD_LENGTH + " chars.",
+                passwordField,
+                passwordErrorLabel
+        );
+
+        return isFullNameValid && isEmailValid && isPasswordValid;
     }
 
     void handleRegisterResponse(HttpResponse<String> resp) {
