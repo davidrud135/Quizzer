@@ -15,7 +15,6 @@ import shared.AppDocumentsPaths;
 import java.io.IOException;
 
 public class AuthUtils {
-    private static final String INVALID_FORM_CONTROL_CLASS = "invalid";
 
     public static void openAuthModal(String messageText, Window ownerWindow) throws IOException {
         AuthModalWindowController.setMessageText(messageText);
@@ -28,20 +27,6 @@ public class AuthUtils {
         stage.setMaximized(false);
         stage.setResizable(false);
         stage.showAndWait();
-    }
-
-    public static void setFormGroupValidity(boolean isValid, String errorText, TextField field, Label errorLabel) {
-        if (!isValid) {
-            errorLabel.setText(errorText);
-            errorLabel.setVisible(true);
-            var fieldStyleClasses = field.getStyleClass();
-            if (!fieldStyleClasses.contains(INVALID_FORM_CONTROL_CLASS)) {
-                fieldStyleClasses.add(INVALID_FORM_CONTROL_CLASS);
-            }
-        } else {
-            field.getStyleClass().remove(INVALID_FORM_CONTROL_CLASS);
-            errorLabel.setVisible(false);
-        }
     }
 
 

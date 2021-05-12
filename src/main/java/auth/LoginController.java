@@ -66,13 +66,13 @@ public class LoginController {
         boolean isEmailValid = !email.isEmpty();
         boolean isPasswordValid = !password.isEmpty();
 
-        AuthUtils.setFormGroupValidity(
+        GeneralUtils.setFormGroupValidity(
                 isEmailValid,
                 "This field is required.",
                 emailField,
                 emailErrorLabel
         );
-        AuthUtils.setFormGroupValidity(
+        GeneralUtils.setFormGroupValidity(
                 isPasswordValid,
                 "This field is required.",
                 passwordField,

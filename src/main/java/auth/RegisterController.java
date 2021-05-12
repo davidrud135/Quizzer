@@ -82,19 +82,19 @@ public class RegisterController {
         boolean isEmailValid = email.matches(EMAIL_REGEX);
         boolean isPasswordValid = password.length() >= MIN_PASSWORD_LENGTH;
 
-        AuthUtils.setFormGroupValidity(
+        GeneralUtils.setFormGroupValidity(
                 isFullNameValid,
                 "This field is required.",
                 fullNameField,
                 fullNameErrorLabel
         );
-        AuthUtils.setFormGroupValidity(
+        GeneralUtils.setFormGroupValidity(
                 isEmailValid,
                 "Email is not valid.",
                 emailField,
                 emailErrorLabel
         );
-        AuthUtils.setFormGroupValidity(
+        GeneralUtils.setFormGroupValidity(
                 isPasswordValid,
                 "Password length should be at least " + MIN_PASSWORD_LENGTH + " chars.",
                 passwordField,
