@@ -22,6 +22,8 @@ public class GeneralUtils {
         Stage stage = new Stage();
         stage.setTitle("Quizzer");
         stage.setScene(new Scene(root));
+        stage.setMinWidth(800);
+        stage.setMinHeight(500);
 
         Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
         stage.setX(primaryScreenBounds.getMinX());
