@@ -1,6 +1,5 @@
 package utils;
 
-import com.sun.javafx.PlatformUtil;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Parent;
@@ -13,6 +12,7 @@ import javafx.stage.Window;
 
 import java.awt.*;
 import java.io.IOException;
+import java.util.Locale;
 
 public class GeneralUtils {
     private static final String INVALID_FORM_CONTROL_CLASS = "invalid";
@@ -31,7 +31,7 @@ public class GeneralUtils {
 
         var iconImagePath = "/assets/quiz-icon.png";
         stage.getIcons().add(new Image(GeneralUtils.class.getResourceAsStream(iconImagePath)));
-        if (PlatformUtil.isMac()) {
+        if (System.getProperty("os.name").toLowerCase(Locale.ROOT).contains("mac")) {
             Taskbar.getTaskbar().setIconImage(Toolkit.getDefaultToolkit().getImage(GeneralUtils.class.getResource(iconImagePath)));
         }
         stage.show();
