@@ -5,4 +5,5 @@ public interface Env {
 
     String REGISTER_USER_API_URL = API_URL + "/register";
     String LOGIN_USER_API_URL = API_URL + "/login";
+    String QUIZZES_API_URL = API_URL + "/quizzes";
 }
