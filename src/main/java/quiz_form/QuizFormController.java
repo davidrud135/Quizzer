@@ -18,7 +18,6 @@ import models.CreateQuestion;
 import models.CreateQuiz;
 import models.QuestionType;
 import shared.AppDocumentsPaths;
-import utils.AuthUtils;
 import utils.GeneralUtils;
 
 import java.io.IOException;
@@ -448,7 +447,7 @@ public class QuizFormController {
                     "Your quiz is successfully created." :
                     "Sorry, we couldn't create the quiz.";
             try {
-                AuthUtils.openAuthModal(respMessage, getCurrWindow());
+                GeneralUtils.openInfoModal(respMessage, getCurrWindow());
                 GeneralUtils.openWindow(AppDocumentsPaths.MAIN, getCurrWindow());
             } catch (IOException e) {
                 e.printStackTrace();

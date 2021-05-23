@@ -7,7 +7,6 @@ import javafx.scene.layout.VBox;
 import models.ApiErrorResponse;
 import models.ApiResponseStatusCodes;
 import shared.AppDocumentsPaths;
-import utils.AuthUtils;
 import utils.GeneralUtils;
 import utils.GsonWrapper;
 
@@ -92,7 +91,7 @@ public class LoginController {
                     return;
                 }
                 var errResp = GsonWrapper.getInstance().fromJson(resp.body(), ApiErrorResponse.class);
-                AuthUtils.openAuthModal(errResp.getMessage(), currWindow);
+                GeneralUtils.openInfoModal(errResp.getMessage(), currWindow);
             } catch (IOException e) {
                 e.printStackTrace();
             }
