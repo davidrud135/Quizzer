@@ -99,12 +99,7 @@ public class LoginController {
     }
 
     void setLoadingState(boolean isLoading) {
-        if (isLoading) {
-            loginBtn.setText("Signing you in..");
-            loginFormBox.setDisable(true);
-            return;
-        }
-        loginFormBox.setDisable(false);
-        loginBtn.setText(INITIAL_LOGIN_BTN_TEXT);
+        loginFormBox.setDisable(isLoading);
+        loginBtn.setText(isLoading ? "Signing you in.." : INITIAL_LOGIN_BTN_TEXT);
     }
 }

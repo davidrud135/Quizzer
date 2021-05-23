@@ -122,12 +122,7 @@ public class RegisterController {
     }
 
     void setLoadingState(boolean isLoading) {
-        if (isLoading) {
-            registerFormBox.setDisable(true);
-            registerBtn.setText("Signing you up..");
-            return;
-        }
-        registerFormBox.setDisable(false);
-        registerBtn.setText(INITIAL_REGISTER_BTN_TEXT);
+        registerFormBox.setDisable(isLoading);
+        registerBtn.setText(isLoading ? "Signing you up.." : INITIAL_REGISTER_BTN_TEXT);
     }
 }
