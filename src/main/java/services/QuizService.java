@@ -1,7 +1,6 @@
-package quiz_form;
+package services;
 
 import models.CreateQuiz;
-import models.CreateUser;
 import shared.Env;
 import utils.GsonWrapper;
 
@@ -12,7 +11,7 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.concurrent.CompletableFuture;
 
-public class QuizFormService {
+public class QuizService {
     public static CompletableFuture<HttpResponse<String>> createQuiz(CreateQuiz newQuiz) throws URISyntaxException {
         var reqURI = new URI(Env.QUIZZES_API_URL);
         var newQuizDataJson = GsonWrapper.getInstance().toJson(newQuiz);
@@ -24,5 +23,17 @@ public class QuizFormService {
         return HttpClient
                 .newHttpClient()
                 .sendAsync(createQuizReq, HttpResponse.BodyHandlers.ofString());
+    }
+
+    public static CompletableFuture<HttpResponse<String>> getQuiz(String quizId) throws URISyntaxException {
+        var reqURI = new URI(String.format("%s/%s", Env.QUIZZES_API_URL, quizId));
+        var getQuizReq = HttpRequest
+                .newBuilder(reqURI)
+                .setHeader("Content-Type", "application/json")
+                .GET()
+                .build();
+        return HttpClient
+                .newHttpClient()
+                .sendAsync(getQuizReq, HttpResponse.BodyHandlers.ofString());
     }
 }

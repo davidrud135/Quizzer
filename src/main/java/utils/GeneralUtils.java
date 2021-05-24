@@ -9,7 +9,7 @@ import javafx.scene.image.Image;
 import javafx.stage.*;
 import javafx.stage.Window;
 import shared.AppDocumentsPaths;
-import shared.InfoModalWindowController;
+import controllers.InfoModalWindowController;
 
 import java.awt.*;
 import java.io.IOException;

@@ -1,5 +1,6 @@
-package auth;
+package controllers;
 
+import services.AuthService;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
