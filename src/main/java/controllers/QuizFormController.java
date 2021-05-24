@@ -75,7 +75,8 @@ public class QuizFormController {
     @FXML
     void onCreateQuiz() throws URISyntaxException {
         quiz.setTitle(quizTitleField.getText().trim());
-        quiz.setDescription(quizDescriptionTextArea.getText().trim());
+        var quizDescription = quizDescriptionTextArea.getText().trim();
+        quiz.setDescription(quizDescription.isEmpty() ? null : quizDescription);
         boolean isValidQuiz = validateQuizData();
         if (!isValidQuiz) {
             return;
