@@ -18,7 +18,7 @@ import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
 public class AuthService {
-    private static User currUser = new User("1", "Testik", "testik@gmail.com");
+    private static User currUser = null;
 
     public static CompletableFuture<HttpResponse<String>> register(CreateUser newUser) throws URISyntaxException {
         var reqURI = new URI(Env.REGISTER_USER_API_URL);
