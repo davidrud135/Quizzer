@@ -144,7 +144,6 @@ public class TakeQuizFormController {
                     var singleAnswerRadioBtn = new RadioButton();
                     singleAnswerRadioBtn.setId(answer.getId());
                     singleAnswerRadioBtn.setToggleGroup(toggleGroup);
-                    singleAnswerRadioBtn.setText(answer.getTitle());
                     singleAnswersVBox.getChildren().add(singleAnswerRadioBtn);
                 });
                 singleAnswersVBox.setSpacing(10);
@@ -156,7 +155,6 @@ public class TakeQuizFormController {
                 question.getAnswers().forEach((answer -> {
                     var multipleAnswerCheckBox = new CheckBox();
                     multipleAnswerCheckBox.setId(answer.getId());
-                    multipleAnswerCheckBox.setText(answer.getTitle());
                     multipleAnswerCheckBox.selectedProperty().addListener((event) -> {
                         var isSelected = multipleAnswerCheckBox.isSelected();
                         var selectedAnswerId = multipleAnswerCheckBox.getId();
