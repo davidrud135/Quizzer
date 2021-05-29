@@ -134,7 +134,6 @@ public class TakeQuizFormController {
                     var newSelectedAnswerRadioBtn = (RadioButton) newVal;
                     var newSelectedAnswerAttempt = new AnswerAttempt();
                     newSelectedAnswerAttempt.setId(newSelectedAnswerRadioBtn.getId());
-                    newSelectedAnswerAttempt.setValue(newSelectedAnswerRadioBtn.getText());
                     questionAttempt.addAnswer(newSelectedAnswerAttempt);
                     if (prevVal != null) {
                         var prevSelectedAnswerRadioBtn = (RadioButton) prevVal;
@@ -163,7 +162,6 @@ public class TakeQuizFormController {
                         var selectedAnswerId = multipleAnswerCheckBox.getId();
                         if (isSelected) {
                             var answerAttempt = new AnswerAttempt();
-                            answerAttempt.setValue(multipleAnswerCheckBox.getText());
                             answerAttempt.setId(selectedAnswerId);
                             questionAttempt.addAnswer(answerAttempt);
                         } else {
