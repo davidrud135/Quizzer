@@ -1,6 +1,7 @@
 package services;
 
 import models.CreateQuiz;
+import models.TakeQuizAttempt;
 import shared.Env;
 import utils.GsonWrapper;
 
@@ -35,5 +36,18 @@ public class QuizService {
         return HttpClient
                 .newHttpClient()
                 .sendAsync(getQuizReq, HttpResponse.BodyHandlers.ofString());
+    }
+
+    public static CompletableFuture<HttpResponse<String>> takeQuizAttempt(String quizId, TakeQuizAttempt quizAttemptData) throws URISyntaxException {
+        var reqURI = new URI(Env.TAKE_QUIZ_ATTEMPT_API_URL(quizId));
+        var quizAttemptDataJson = GsonWrapper.getInstance().toJson(quizAttemptData);
+        var takeQuizAttemptReq = HttpRequest
+                .newBuilder(reqURI)
+                .setHeader("Content-Type", "application/json")
+                .POST(HttpRequest.BodyPublishers.ofString(quizAttemptDataJson))
+                .build();
+        return HttpClient
+                .newHttpClient()
+                .sendAsync(takeQuizAttemptReq, HttpResponse.BodyHandlers.ofString());
     }
 }

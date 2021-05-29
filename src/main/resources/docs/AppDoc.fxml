@@ -19,7 +19,7 @@
 
 <VBox prefHeight="600.0" prefWidth="1020.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.AppController">
     <children>
-        <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS">
+        <AnchorPane fx:id="rootAnchorPane" maxHeight="-1.0" maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS">
             <children>
                 <HBox alignment="CENTER" layoutX="179.0" layoutY="68.0" prefHeight="50.0" styleClass="toolbar" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
 
@@ -91,12 +91,12 @@
                                         <Font size="12.0" />
                                     </font>
                                 </Label>
-                                <TextField focusTraversable="false" promptText="Quiz ID" styleClass="take-quiz-field">
+                                <TextField fx:id="quizIdTextField" focusTraversable="false" prefHeight="31.0" promptText="Quiz ID" styleClass="take-quiz-field">
                                     <font>
                                         <Font size="14.0" />
                                     </font>
                                 </TextField>
-                                <Button prefHeight="30.0" styleClass="take-quiz-btn" text="Take Quiz">
+                                <Button fx:id="takeQuizBtn" prefHeight="30.0" styleClass="take-quiz-btn" text="Take Quiz">
                                     <font>
                                         <Font size="14.0" />
                                     </font>
