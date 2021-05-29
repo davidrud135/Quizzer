@@ -1,5 +1,6 @@
 package controllers;
 
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
@@ -14,6 +15,7 @@ import utils.GeneralUtils;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.net.http.HttpResponse;
 
 public class TakeQuizFormController {
     public static Quiz quiz;
@@ -52,8 +54,9 @@ public class TakeQuizFormController {
         if (!isValidTakeQuizAttempt) {
             return;
         }
-        QuizService.takeQuizAttempt(quiz.getId(), takeQuizAttempt);
-        GeneralUtils.openWindow(AppDocumentsPaths.MAIN, getCurrWindow());
+        QuizService
+            .takeQuizAttempt(quiz.getId(), takeQuizAttempt)
+            .thenAcceptAsync(this::handleTakeQuizAttemptResponse);
     }
 
     private Window getCurrWindow() {
@@ -208,6 +211,20 @@ public class TakeQuizFormController {
             }
         }
         return null;
+    }
+
+    private void handleTakeQuizAttemptResponse(HttpResponse<String> resp) {
+        Platform.runLater(() -> {
+            var respMessage = resp.statusCode() == ApiResponseStatusCodes.TAKE_QUIZ_SUCCESSFUL
+                    ? "Your quiz attempt is successfully submitted."
+                    : "Sorry, an error occurred while submitting your quiz attempt.";
+            try {
+                GeneralUtils.openInfoModal(respMessage, getCurrWindow());
+                GeneralUtils.openWindow(AppDocumentsPaths.MAIN, getCurrWindow());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
     }
 
 }
