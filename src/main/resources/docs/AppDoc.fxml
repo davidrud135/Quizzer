@@ -31,7 +31,7 @@
 
                     <HBox alignment="CENTER_RIGHT" BorderPane.alignment="CENTER" HBox.hgrow="ALWAYS">
                         <children>
-                            <Button focusTraversable="false" styleClass="my-quizzes-btn" text="My Quizzes">
+                            <Button focusTraversable="false" onAction="#onNavigateToQuizzesWindow" styleClass="my-quizzes-btn" text="My Quizzes">
                                 <cursor>
                                     <Cursor fx:constant="HAND" />
                                 </cursor>

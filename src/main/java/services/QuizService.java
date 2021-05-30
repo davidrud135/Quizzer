@@ -50,4 +50,17 @@ public class QuizService {
                 .newHttpClient()
                 .sendAsync(takeQuizAttemptReq, HttpResponse.BodyHandlers.ofString());
     }
+
+    public static CompletableFuture<HttpResponse<String>> getUserQuizzes(String userId) throws URISyntaxException {
+        var reqURI = new URI(Env.USER_QUIZZES_API_URL(userId));
+        var getUserQuizzesReq = HttpRequest
+                .newBuilder(reqURI)
+                .setHeader("Content-Type", "application/json")
+                .GET()
+                .build();
+        return HttpClient
+                .newHttpClient()
+                .sendAsync(getUserQuizzesReq, HttpResponse.BodyHandlers.ofString());
+    }
+
 }

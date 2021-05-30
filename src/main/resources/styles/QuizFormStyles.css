@@ -1,7 +1,7 @@
 .bottom-toolbar {
     -fx-border-style: solid hidden hidden hidden;
     -fx-border-width: 1;
-    -fx-border-color: #000;
+    -fx-border-color: grey;
 }
 
 .tab {

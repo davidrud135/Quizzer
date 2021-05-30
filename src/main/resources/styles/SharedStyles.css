@@ -23,3 +23,10 @@
     -fx-focus-color: transparent;
     -fx-faint-focus-color: transparent;
 }
+
+.scroll-pane {
+    -fx-background-color:transparent;
+    -fx-focus-color: transparent;
+    -fx-faint-focus-color: transparent;
+}
+
