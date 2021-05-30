@@ -1,6 +1,6 @@
-package quiz_form;
+package controllers;
 
-import auth.AuthService;
+import services.AuthService;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.beans.value.ObservableValue;
@@ -13,12 +13,9 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.stage.Window;
-import models.CreateAnswer;
-import models.CreateQuestion;
-import models.CreateQuiz;
-import models.QuestionType;
+import models.*;
 import shared.AppDocumentsPaths;
-import utils.AuthUtils;
+import services.QuizService;
 import utils.GeneralUtils;
 
 import java.io.IOException;
@@ -78,14 +75,15 @@ public class QuizFormController {
     @FXML
     void onCreateQuiz() throws URISyntaxException {
         quiz.setTitle(quizTitleField.getText().trim());
-        quiz.setDescription(quizDescriptionTextArea.getText().trim());
+        var quizDescription = quizDescriptionTextArea.getText().trim();
+        quiz.setDescription(quizDescription.isEmpty() ? null : quizDescription);
         boolean isValidQuiz = validateQuizData();
         if (!isValidQuiz) {
             return;
         }
         setLoadingState(true);
         quizErrorLabel.setText("");
-        QuizFormService
+        QuizService
                 .createQuiz(quiz)
                 .thenAcceptAsync(this::handleCreateQuizResp);
     }
@@ -444,11 +442,11 @@ public class QuizFormController {
 
     private void handleCreateQuizResp(HttpResponse<String> resp) {
         Platform.runLater(() -> {
-            var respMessage = resp.statusCode() == 201 ?
-                    "Your quiz is successfully created." :
-                    "Sorry, we couldn't create the quiz.";
+            var respMessage = resp.statusCode() == ApiResponseStatusCodes.CREATE_QUIZ_SUCCESSFUL
+                    ? "Your quiz is successfully created."
+                    : "Sorry, we couldn't create the quiz.";
             try {
-                AuthUtils.openAuthModal(respMessage, getCurrWindow());
+                GeneralUtils.openInfoModal(respMessage, getCurrWindow());
                 GeneralUtils.openWindow(AppDocumentsPaths.MAIN, getCurrWindow());
             } catch (IOException e) {
                 e.printStackTrace();

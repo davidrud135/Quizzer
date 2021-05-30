@@ -14,7 +14,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox fx:id="rootContainer" prefHeight="600.0" prefWidth="1020.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="quiz_form.QuizFormController">
+<VBox fx:id="rootContainer" prefHeight="600.0" prefWidth="1020.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.QuizFormController">
     <children>
         <HBox alignment="TOP_CENTER" prefWidth="200.0">
             <children>

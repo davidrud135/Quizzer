@@ -1,5 +1,6 @@
-package auth;
+package controllers;
 
+import services.AuthService;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -7,7 +8,6 @@ import javafx.scene.layout.VBox;
 import models.ApiErrorResponse;
 import models.ApiResponseStatusCodes;
 import shared.AppDocumentsPaths;
-import utils.AuthUtils;
 import utils.GeneralUtils;
 import utils.GsonWrapper;
 
@@ -92,7 +92,7 @@ public class LoginController {
                     return;
                 }
                 var errResp = GsonWrapper.getInstance().fromJson(resp.body(), ApiErrorResponse.class);
-                AuthUtils.openAuthModal(errResp.getMessage(), currWindow);
+                GeneralUtils.openInfoModal(errResp.getMessage(), currWindow);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -100,12 +100,7 @@ public class LoginController {
     }
 
     void setLoadingState(boolean isLoading) {
-        if (isLoading) {
-            loginBtn.setText("Signing you in..");
-            loginFormBox.setDisable(true);
-            return;
-        }
-        loginFormBox.setDisable(false);
-        loginBtn.setText(INITIAL_LOGIN_BTN_TEXT);
+        loginFormBox.setDisable(isLoading);
+        loginBtn.setText(isLoading ? "Signing you in.." : INITIAL_LOGIN_BTN_TEXT);
     }
 }

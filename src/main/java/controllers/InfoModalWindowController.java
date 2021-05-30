@@ -1,11 +1,11 @@
-package auth;
+package controllers;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
 
-public class AuthModalWindowController {
+public class InfoModalWindowController {
     static String messageText;
 
     @FXML

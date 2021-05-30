@@ -1,5 +1,6 @@
-package auth;
+package controllers;
 
+import services.AuthService;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -11,7 +12,6 @@ import models.ApiErrorResponse;
 import models.ApiResponseStatusCodes;
 import models.CreateUser;
 import shared.AppDocumentsPaths;
-import utils.AuthUtils;
 import utils.GeneralUtils;
 import utils.GsonWrapper;
 
@@ -110,12 +110,12 @@ public class RegisterController {
             var currWindow = registerBtn.getScene().getWindow();
             try {
                 if (resp.statusCode() == ApiResponseStatusCodes.REGISTER_SUCCESSFUL) {
-                    AuthUtils.openAuthModal("You have successfully registered.\n Now please login", currWindow);
+                    GeneralUtils.openInfoModal("You have successfully registered.\n Now please login", currWindow);
                     GeneralUtils.openWindow(AppDocumentsPaths.LOGIN, currWindow);
                     return;
                 }
                 var errResp = GsonWrapper.getInstance().fromJson(resp.body(), ApiErrorResponse.class);
-                AuthUtils.openAuthModal(errResp.getMessage(), currWindow);
+                GeneralUtils.openInfoModal(errResp.getMessage(), currWindow);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -123,12 +123,7 @@ public class RegisterController {
     }
 
     void setLoadingState(boolean isLoading) {
-        if (isLoading) {
-            registerFormBox.setDisable(true);
-            registerBtn.setText("Signing you up..");
-            return;
-        }
-        registerFormBox.setDisable(false);
-        registerBtn.setText(INITIAL_REGISTER_BTN_TEXT);
+        registerFormBox.setDisable(isLoading);
+        registerBtn.setText(isLoading ? "Signing you up.." : INITIAL_REGISTER_BTN_TEXT);
     }
 }

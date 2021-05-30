@@ -6,9 +6,10 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
-import javafx.stage.Screen;
-import javafx.stage.Stage;
+import javafx.stage.*;
 import javafx.stage.Window;
+import shared.AppDocumentsPaths;
+import controllers.InfoModalWindowController;
 
 import java.awt.*;
 import java.io.IOException;
@@ -40,6 +41,19 @@ public class GeneralUtils {
         if (prevWindow != null) {
             prevWindow.hide();
         }
+    }
+
+    public static void openInfoModal(String messageText, Window ownerWindow) throws IOException {
+        InfoModalWindowController.setMessageText(messageText);
+        Parent root = FXMLLoader.load(InfoModalWindowController.class.getResource(AppDocumentsPaths.INFO_MODAL));
+        Stage stage = new Stage();
+        stage.setScene(new Scene(root));
+        stage.initModality(Modality.WINDOW_MODAL);
+        stage.initStyle(StageStyle.UNDECORATED);
+        stage.initOwner(ownerWindow);
+        stage.setMaximized(false);
+        stage.setResizable(false);
+        stage.showAndWait();
     }
 
     public static void setFormGroupValidity(boolean isValid, String errorText, javafx.scene.control.TextField field, Label errorLabel) {
