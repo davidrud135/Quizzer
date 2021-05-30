@@ -6,4 +6,5 @@ public interface ApiResponseStatusCodes {
     int CREATE_QUIZ_SUCCESSFUL = 201;
     int GET_QUIZ_SUCCESSFUL = 200;
     int TAKE_QUIZ_SUCCESSFUL = 201;
+    int GET_USER_QUIZZES_SUCCESSFUL = 200;
 }

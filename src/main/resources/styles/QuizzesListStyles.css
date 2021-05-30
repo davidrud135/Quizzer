@@ -1,0 +1,23 @@
+.top-toolbar {
+    -fx-border-style: hidden hidden solid hidden;
+    -fx-border-width: 1;
+    -fx-border-color: grey;
+}
+
+.go-back-btn {
+    -fx-background-color: transparent;
+    -fx-border-color: grey;
+    -fx-border-radius: 5px;
+}
+
+.quiz-box {
+    -fx-padding: 5px;
+    -fx-border-style: hidden hidden solid hidden;
+    -fx-border-width: 1;
+    -fx-border-color: grey;
+    -fx-max-width: 800px;
+}
+
+.quiz-box:hover {
+    -fx-background-color: rgba(0, 0, 0, 0.1);
+}

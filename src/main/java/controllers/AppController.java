@@ -57,6 +57,11 @@ public class AppController {
     }
 
     @FXML
+    void onNavigateToQuizzesWindow() throws IOException {
+        GeneralUtils.openWindow(AppDocumentsPaths.QUIZZES_LIST, getCurrWindow());
+    }
+
+    @FXML
     void onSignOut() throws IOException {
         AuthService.signOut();
         GeneralUtils.openWindow(AppDocumentsPaths.LOGIN, getCurrWindow());

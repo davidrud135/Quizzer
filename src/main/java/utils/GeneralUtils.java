@@ -12,6 +12,8 @@ import shared.AppDocumentsPaths;
 import controllers.InfoModalWindowController;
 
 import java.awt.*;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.StringSelection;
 import java.io.IOException;
 import java.util.Locale;
 
@@ -68,5 +70,12 @@ public class GeneralUtils {
             field.getStyleClass().remove(INVALID_FORM_CONTROL_CLASS);
             errorLabel.setVisible(false);
         }
+    }
+
+    public static void copyToClipboard(String value) {
+        Toolkit
+            .getDefaultToolkit()
+            .getSystemClipboard()
+            .setContents(new StringSelection(value), null);
     }
 }

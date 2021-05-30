@@ -10,4 +10,8 @@ public interface Env {
     static String TAKE_QUIZ_ATTEMPT_API_URL(String quizId) {
         return String.format("%s/%s/attempts", QUIZZES_API_URL, quizId);
     }
+
+    static String USER_QUIZZES_API_URL(String userId) {
+        return String.format("%s/users/%s/quizzes", API_URL, userId);
+    }
 }
