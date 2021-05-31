@@ -12,6 +12,7 @@ import services.AuthService;
 import services.QuizService;
 import shared.AppDocumentsPaths;
 import utils.GeneralUtils;
+import utils.GsonWrapper;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -215,11 +216,15 @@ public class TakeQuizFormController {
 
     private void handleTakeQuizAttemptResponse(HttpResponse<String> resp) {
         Platform.runLater(() -> {
-            var respMessage = resp.statusCode() == ApiResponseStatusCodes.TAKE_QUIZ_SUCCESSFUL
-                    ? "Your quiz attempt is successfully submitted."
-                    : "Sorry, an error occurred while submitting your quiz attempt.";
             try {
-                GeneralUtils.openInfoModal(respMessage, getCurrWindow());
+                if (resp.statusCode() == ApiResponseStatusCodes.TAKE_QUIZ_SUCCESSFUL) {
+                    var quizAttemptResultData = GsonWrapper.getInstance().fromJson(resp.body(), QuizAttemptResult.class);
+                    QuizAttemptResultController.setQuizAttemptResult(quizAttemptResultData);
+                    GeneralUtils.openModal(AppDocumentsPaths.QUIZ_ATTEMPT_RESULT, getCurrWindow());
+                    GeneralUtils.openWindow(AppDocumentsPaths.MAIN, getCurrWindow());
+                    return;
+                }
+                GeneralUtils.openInfoModal("Sorry, an error occurred while submitting your quiz attempt.", getCurrWindow());
                 GeneralUtils.openWindow(AppDocumentsPaths.MAIN, getCurrWindow());
             } catch (IOException e) {
                 e.printStackTrace();
