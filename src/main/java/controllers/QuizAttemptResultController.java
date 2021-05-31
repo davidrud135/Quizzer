@@ -5,6 +5,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
+import javafx.stage.Stage;
 import javafx.stage.Window;
 import models.QuestionResult;
 import models.QuizAttemptResult;
@@ -38,8 +39,9 @@ public class QuizAttemptResultController {
     }
 
     @FXML
-    void onDismissWindow() throws IOException {
-        GeneralUtils.openWindow(AppDocumentsPaths.MAIN, getCurrWindow());
+    void onDismissWindow() {
+        Stage stage = (Stage) getCurrWindow();
+        stage.close();
     }
 
     private String getQuizSuccessString() {
