@@ -72,37 +72,43 @@
                     <children>
                         <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
                             <children>
-                                <Button focusTraversable="false" onAction="#openQuizFormWindow" prefHeight="30.0" styleClass="primary-btn" text="Create Quiz">
+                                <Button focusTraversable="false" onAction="#openQuizFormWindow" styleClass="primary-btn" text="Create Quiz">
                                     <cursor>
                                         <Cursor fx:constant="HAND" />
                                     </cursor>
                                     <font>
-                                        <Font size="14.0" />
+                                        <Font size="15.0" />
                                     </font>
+                           <padding>
+                              <Insets bottom="10.0" left="15.0" right="15.0" top="10.0" />
+                           </padding>
                                 </Button>
                                 <Label text="OR">
                                     <HBox.margin>
                                         <Insets left="20.0" right="20.0" />
                                     </HBox.margin>
                                     <font>
-                                        <Font size="12.0" />
+                                        <Font size="14.0" />
                                     </font>
                                 </Label>
-                                <TextField fx:id="quizIdTextField" focusTraversable="false" prefHeight="31.0" promptText="Quiz ID" styleClass="take-quiz-field">
+                                <TextField fx:id="quizIdTextField" focusTraversable="false" prefHeight="39.0" prefWidth="250.0" promptText="Quiz ID" styleClass="take-quiz-field">
                                     <font>
                                         <Font size="14.0" />
                                     </font>
                                 </TextField>
-                                <Button fx:id="takeQuizBtn" prefHeight="30.0" styleClass="take-quiz-btn" text="Take Quiz">
+                                <Button fx:id="takeQuizBtn" styleClass="take-quiz-btn" text="Take Quiz">
                                     <font>
                                         <Font size="14.0" />
                                     </font>
                                     <HBox.margin>
-                                        <Insets left="-1.0" />
+                                        <Insets />
                                     </HBox.margin>
                                     <cursor>
                                         <Cursor fx:constant="HAND" />
                                     </cursor>
+                           <padding>
+                              <Insets bottom="10.0" left="15.0" right="15.0" top="10.0" />
+                           </padding>
                                 </Button>
                             </children>
                         </HBox>
