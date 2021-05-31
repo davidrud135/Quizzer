@@ -63,4 +63,16 @@ public class QuizService {
                 .sendAsync(getUserQuizzesReq, HttpResponse.BodyHandlers.ofString());
     }
 
+    public static CompletableFuture<HttpResponse<String>> removeQuiz(String quizId) throws URISyntaxException {
+        var reqURI = new URI(Env.QUIZZES_API_URL + "/" + quizId);
+        var removeQuizReq = HttpRequest
+                .newBuilder(reqURI)
+                .setHeader("Content-Type", "application/json")
+                .DELETE()
+                .build();
+        return HttpClient
+                .newHttpClient()
+                .sendAsync(removeQuizReq, HttpResponse.BodyHandlers.ofString());
+    }
+
 }
