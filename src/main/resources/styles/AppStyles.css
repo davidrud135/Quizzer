@@ -1,0 +1,35 @@
+.toolbar {
+    -fx-border-style: hidden hidden solid hidden;
+    -fx-border-width: 1;
+    -fx-border-color: black;
+}
+.toolbar .my-quizzes-btn {
+    -fx-background-color: lightblue;
+}
+.toolbar .user-menu-btn {
+    -fx-background-color: transparent;
+}
+.toolbar .user-menu-btn .context-menu {
+    -fx-pref-width: 100;
+    -fx-background-radius: 5;
+}
+.toolbar .user-menu-btn .context-menu .menu-item:focused {
+    -fx-cursor: hand;
+    -fx-background-color: none;
+}
+.toolbar .user-menu-btn .context-menu .menu-item:focused .label {
+    -fx-text-fill: -primary-color;
+}
+
+.take-quiz-field {
+    -fx-border-radius: 3 0 0 3;
+    -fx-background-radius: 3 0 0 3;
+    -fx-border-color: lightgreen;
+    -fx-focus-color: transparent;
+    -fx-faint-focus-color: transparent;
+}
+.take-quiz-btn {
+    -fx-border-radius: 0 3 3 0;
+    -fx-background-radius: 0 3 3 0;
+    -fx-background-color: lightgreen;
+}

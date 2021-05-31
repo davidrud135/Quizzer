@@ -1,0 +1,32 @@
+* {
+    -primary-color: #6200ee;
+    -danger-color: #CC0000;
+}
+
+.primary-btn, .danger-btn {
+    -fx-text-fill: azure;
+    -fx-cursor: hand;
+}
+.primary-btn {
+    -fx-background-color: -primary-color;
+}
+.danger-btn {
+    -fx-background-color: -danger-color;
+}
+
+.hyperlink {
+    -fx-border-color: transparent;
+}
+
+.text-field.invalid {
+    -fx-border-color: -danger-color;
+    -fx-focus-color: transparent;
+    -fx-faint-focus-color: transparent;
+}
+
+.scroll-pane {
+    -fx-background-color:transparent;
+    -fx-focus-color: transparent;
+    -fx-faint-focus-color: transparent;
+}
+
