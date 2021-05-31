@@ -45,13 +45,25 @@ public class GeneralUtils {
         }
     }
 
+    public static void openModal(String docPath, Window ownerWindow) throws IOException {
+        Parent root = FXMLLoader.load(InfoModalWindowController.class.getResource(docPath));
+        Stage stage = new Stage();
+        stage.setScene(new Scene(root));
+        stage.initModality(Modality.WINDOW_MODAL);
+        stage.initStyle(StageStyle.UTILITY);
+        stage.initOwner(ownerWindow);
+        stage.setMaximized(false);
+        stage.setResizable(false);
+        stage.showAndWait();
+    }
+
     public static void openInfoModal(String messageText, Window ownerWindow) throws IOException {
         InfoModalWindowController.setMessageText(messageText);
         Parent root = FXMLLoader.load(InfoModalWindowController.class.getResource(AppDocumentsPaths.INFO_MODAL));
         Stage stage = new Stage();
         stage.setScene(new Scene(root));
         stage.initModality(Modality.WINDOW_MODAL);
-        stage.initStyle(StageStyle.UNDECORATED);
+        stage.initStyle(StageStyle.UTILITY);
         stage.initOwner(ownerWindow);
         stage.setMaximized(false);
         stage.setResizable(false);
