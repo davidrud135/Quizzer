@@ -9,4 +9,5 @@ public interface AppDocumentsPaths {
     String TAKE_QUIZ_FORM = "/docs/TakeQuizFormDoc.fxml";
     String QUIZZES_LIST = "/docs/QuizzesListDoc.fxml";
     String QUIZ_ATTEMPT_RESULT = "/docs/QuizAttemptResultDoc.fxml";
+    String CONFIRM_MODAL = "/docs/ConfirmModalWindowDoc.fxml";
 }

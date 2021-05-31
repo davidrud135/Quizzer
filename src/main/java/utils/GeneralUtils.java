@@ -1,5 +1,6 @@
 package utils;
 
+import controllers.ConfirmModalWindowController;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Parent;
@@ -68,6 +69,20 @@ public class GeneralUtils {
         stage.setMaximized(false);
         stage.setResizable(false);
         stage.showAndWait();
+    }
+
+    public static boolean openConfirmModal(String messageText, Window ownerWindow) throws IOException {
+        ConfirmModalWindowController.setMessageText(messageText);
+        Parent root = FXMLLoader.load(ConfirmModalWindowController.class.getResource(AppDocumentsPaths.CONFIRM_MODAL));
+        Stage stage = new Stage();
+        stage.setScene(new Scene(root));
+        stage.initModality(Modality.WINDOW_MODAL);
+        stage.initStyle(StageStyle.UNDECORATED);
+        stage.initOwner(ownerWindow);
+        stage.setMaximized(false);
+        stage.setResizable(false);
+        stage.showAndWait();
+        return ConfirmModalWindowController.isConfirmed;
     }
 
     public static void setFormGroupValidity(boolean isValid, String errorText, javafx.scene.control.TextField field, Label errorLabel) {

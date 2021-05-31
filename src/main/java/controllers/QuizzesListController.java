@@ -41,8 +41,8 @@ public class QuizzesListController {
         loadingVBox.managedProperty().bind(loadingVBox.visibleProperty());
         setLoadingState(true);
         QuizService
-            .getUserQuizzes(AuthService.getCurrUser().getId())
-            .thenAcceptAsync(this::handleCurrUserQuizzesRequestResponse);
+                .getUserQuizzes(AuthService.getCurrUser().getId())
+                .thenAcceptAsync(this::handleCurrUserQuizzesRequestResponse);
     }
 
     @FXML
@@ -54,7 +54,8 @@ public class QuizzesListController {
         Platform.runLater(() -> {
             try {
                 if (resp.statusCode() == ApiResponseStatusCodes.GET_USER_QUIZZES_SUCCESSFUL) {
-                    Type quizzesType = new TypeToken<ArrayList<Quiz>>(){}.getType();
+                    Type quizzesType = new TypeToken<ArrayList<Quiz>>() {
+                    }.getType();
                     quizzes = GsonWrapper.getInstance().fromJson(resp.body(), quizzesType);
                     generateQuizzesList();
                     setLoadingState(false);
@@ -68,6 +69,7 @@ public class QuizzesListController {
     }
 
     private void generateQuizzesList() {
+        quizzesVBox.getChildren().clear();
         if (quizzes.isEmpty()) {
             var noQuizzesLabel = new Label("You have not created any quizzes yet.");
             quizzesVBox.setAlignment(Pos.CENTER);
@@ -77,8 +79,38 @@ public class QuizzesListController {
         for (Quiz quiz : quizzes) {
             var quizHBox = new HBox();
             var titleHBox = new HBox();
+            var actionsHBox = new HBox();
             var quizTitleLabel = new Label(quiz.getTitle());
             var copyQuizIdBtn = new Button();
+            var removeQuizBtn = new Button();
+            removeQuizBtn.setFocusTraversable(false);
+            removeQuizBtn.getStyleClass().add("danger-btn");
+            removeQuizBtn.setText("Remove");
+            removeQuizBtn.setId(quiz.getId());
+            removeQuizBtn.setOnAction((event) -> {
+                var confirmMessage = String.format("Are you sure you want to remove quiz \'%s?\'", quiz.getTitle());
+                var isConfirmed = false;
+                try {
+                    isConfirmed = GeneralUtils.openConfirmModal(confirmMessage, getCurrWindow());
+                    if (isConfirmed) {
+                        QuizService.removeQuiz(quiz.getId()).thenAcceptAsync((resp) -> {
+                            try {
+                                if (resp.statusCode() == ApiResponseStatusCodes.REMOVE_QUIZ_SUCCESSFUL) {
+                                    QuizService
+                                            .getUserQuizzes(AuthService.getCurrUser().getId())
+                                            .thenAcceptAsync(this::handleCurrUserQuizzesRequestResponse);
+                                    return;
+                                }
+                                GeneralUtils.openInfoModal("Couldn't remove the quiz.", getCurrWindow());
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        });
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            });
             quizHBox.getStyleClass().add("quiz-box");
             copyQuizIdBtn.getStyleClass().add("primary-btn");
             copyQuizIdBtn.setId(quiz.getId());
@@ -89,7 +121,9 @@ public class QuizzesListController {
             HBox.setHgrow(titleHBox, Priority.ALWAYS);
             titleHBox.setAlignment(Pos.CENTER_LEFT);
             titleHBox.getChildren().add(quizTitleLabel);
-            quizHBox.getChildren().addAll(titleHBox, copyQuizIdBtn);
+            actionsHBox.setSpacing(10);
+            actionsHBox.getChildren().addAll(copyQuizIdBtn, removeQuizBtn);
+            quizHBox.getChildren().addAll(titleHBox, actionsHBox);
             quizzesVBox.getChildren().add(quizHBox);
         }
     }

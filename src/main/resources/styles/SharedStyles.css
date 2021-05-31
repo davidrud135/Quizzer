@@ -13,6 +13,11 @@
 .danger-btn {
     -fx-background-color: -danger-color;
 }
+.outline-btn {
+    -fx-background-color: transparent;
+    -fx-border-color: grey;
+    -fx-border-radius: 2px;
+}
 
 .hyperlink {
     -fx-border-color: transparent;
@@ -29,4 +34,5 @@
     -fx-focus-color: transparent;
     -fx-faint-focus-color: transparent;
 }
+
 
